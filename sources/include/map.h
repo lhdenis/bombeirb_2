@@ -5,6 +5,13 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+#include <game.h>
+#include <player.h>
+#include <bomb.h>
+#include <map.h>
+
+struct map;
+
 enum cell_type {
 	CELL_EMPTY=0x00,   		//  0000 0000
 	CELL_SCENERY=0x10, 		//  0001 0000
@@ -15,6 +22,14 @@ enum cell_type {
 	CELL_MONSTER=0x60, 		// 	0110 0000
 	CELL_BOMB=0x70 	   		// 	0111 0000
 
+};
+
+enum bomb_type {
+	BOMB_1 = 1, // 0001
+	BOMB_2 = 2, // 0010
+	BOMB_3 = 4, // 0100
+	BOMB_4 = 8, // 1000
+	BOMB_EXPLOSION = 9 // 1001
 };
 
 enum bonus_type {
@@ -43,9 +58,14 @@ enum compose_type {
     CELL_BOX_BOMBDEC  = CELL_BOX | BONUS_BOMB_NB_INC,
     CELL_BOX_LIFE     = CELL_BOX | BONUS_MONSTER,
     CELL_BOX_MONSTER  = CELL_BOX | BONUS_LIFE,
-};
 
-struct map;
+	CELL_BOMB_1 = CELL_BOMB | BOMB_1,
+	CELL_BOMB_2 = CELL_BOMB | BOMB_2,
+	CELL_BOMB_3 = CELL_BOMB | BOMB_3,
+	CELL_BOMB_4 = CELL_BOMB | BOMB_4,
+
+
+};
 
 // Create a new empty map
 struct map* map_new(int width, int height);
@@ -72,5 +92,9 @@ struct map* map_get_static_3();
 
 // Display the map on the screen
 void map_display(struct map* map);
+
+void bomb_display(struct map *map, int x, int y, unsigned char type);
+
+struct bomb *map_get_tab_bomb(struct map *map);
 
 #endif /* MAP_H_ */

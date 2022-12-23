@@ -128,6 +128,7 @@ static short input_keyboard(struct game* game) {
 				player_move(player, map);
 				break;
 			case SDLK_SPACE:
+				drop_bomb(map, player);
 				break;
 			default:
 				break;
@@ -163,6 +164,8 @@ int player_get_door(struct game *game, struct map *map, struct player *player){
 	if(map_get_cell_type(map, x, y) == CELL_DOOR){
 		return 1;
 	}
+	bomb_update(map, player);
+	
 	return 0;
 
 }

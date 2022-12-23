@@ -52,6 +52,7 @@
 #define PLAYER_RIGHT    "sprite/player_right.png"
 #define PLAYER_DOWN     "sprite/player_down.png"
 
+
 // banner
 SDL_Surface* numbers[10];
 SDL_Surface* banner_life;
@@ -154,19 +155,6 @@ static void player_unload() {
 		SDL_FreeSurface(player_img[i]);
 }
 
-void sprite_load() {
-	map_load();
-	bonus_load();
-	banner_load();
-	player_load();
-}
-
-void sprite_free() {
-	map_unload();
-	bonus_unload();
-	banner_unload();
-	player_unload();
-}
 
 SDL_Surface* sprite_get_number(short number) {
 	assert(number >= 0 && number < 9);
@@ -232,3 +220,43 @@ SDL_Surface* sprite_get_door_closed() {
 	assert(door_closed);
 	return door_closed;
 }
+
+// bombs
+
+SDL_Surface* bombs_img[4];
+
+static void bombs_load() {
+	bombs_img[0] = image_load(BOMB_TTL1); // petite mèche
+	bombs_img[1] = image_load(BOMB_TTL2);
+	bombs_img[2] = image_load(BOMB_TTL3);
+	bombs_img[3] = image_load(BOMB_TTL4); // grande mèche
+
+}
+
+static void bombs_unload() {
+	for (int i = 0; i < 4; i++)
+		SDL_FreeSurface(bombs_img[i]);
+}
+
+SDL_Surface* sprite_get_bombs(int i) {
+	assert(bombs_img[i]);
+	return bombs_img[i];
+}
+
+
+void sprite_load() {
+	map_load();
+	bonus_load();
+	banner_load();
+	player_load();
+	bombs_load();
+
+}
+void sprite_free() {
+	map_unload();
+	bonus_unload();
+	banner_unload();
+	player_unload();
+	bombs_unload();
+}
+

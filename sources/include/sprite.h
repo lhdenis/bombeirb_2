@@ -27,4 +27,7 @@ SDL_Surface* sprite_get_banner_bomb();
 SDL_Surface* sprite_get_banner_line();
 SDL_Surface* sprite_get_banner_range();
 
+SDL_Surface* sprite_get_bombs(int);
+SDL_Surface* sprite_get_bonus_bomb(enum bonus_type bonus_type);
+
 #endif /* SPRITE_H_ */

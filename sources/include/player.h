@@ -9,6 +9,7 @@
 #include <constant.h>
 
 struct player;
+struct map;
 
 // Creates a new player with a given number of available bombs
 struct player* player_init(int bomb_number);

@@ -7,17 +7,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#include <map.h>
 #include <constant.h>
 #include <misc.h>
 #include <sprite.h>
 #include <window.h>
 
+#include <map.h>
+#include <bomb.h>
+
 struct map {
 	int width;
 	int height;
 	unsigned char* grid;
+	int lives_of_monster;
+	int speed_monster;
+	int timer_monster;
+	//struct monster *monster_tab;
+	struct bomb *tab_bomb;
+	//struct explosion *explosion_tab;
 };
 
 #define CELL(i,j) ( (i) + (j) * map->width)
@@ -44,6 +51,11 @@ struct map* map_new(int width, int height)
 	  for (j = 0; j < height; j++)
 	    map->grid[CELL(i,j)] = CELL_EMPTY;
 
+	// initialisation
+
+	map->tab_bomb = malloc(9*sizeof(struct bomb*));
+	bomb_init_tab(map->tab_bomb);
+
 	return map;
 }
 
@@ -59,6 +71,11 @@ void map_free(struct map *map)
 		return;
 	free(map->grid);
 	free(map);
+}
+
+struct bomb *map_get_tab_bomb(struct map *map){
+	assert(map);
+	return map->tab_bomb;
 }
 
 int map_get_width(struct map* map)
@@ -134,15 +151,18 @@ void map_display(struct map* map)
 	    unsigned char type = map->grid[CELL(i,j)];
 	    
 	    switch (type & 0xf0) {
+		case CELL_BOMB:
+		  bomb_display(map, x, y, type);
+		  break;
 		case CELL_SCENERY:
 		  display_scenery(map, x, y, type);
 		  break;
 	    case CELL_BOX:
 	      window_display_image(sprite_get_box(), x, y);
 	      break;
-	    case CELL_BONUS:
-	      display_bonus(map, x, y, type);
-	      break;
+	    //case CELL_BONUS:
+	      //display_bonus(map, x, y, type);
+	      //break;
 	    case CELL_KEY:
 	      window_display_image(sprite_get_key(), x, y);
 	      break;
@@ -154,6 +174,33 @@ void map_display(struct map* map)
 	  }
 	}
 }
+
+void bomb_display(struct map *map, int x, int y, unsigned char type){
+
+        assert(map != NULL);
+		assert(map->height > 0 && map->width > 0);
+
+		switch (type & 0x0f) {
+
+		case BOMB_1:
+			window_display_image(sprite_get_bombs(0), x, y); 
+			break;
+		case BOMB_2:
+			window_display_image(sprite_get_bombs(1), x, y); 
+			break;
+		case BOMB_3:
+			window_display_image(sprite_get_bombs(2), x, y); 
+			break;
+		case BOMB_4:
+			window_display_image(sprite_get_bombs(3), x, y); 
+			break;
+		//case BOMB_EXPLOSION:
+			//bomb_explosion(map, x, y);
+			//window_display_image(sprite_get_bombs(3), x * SIZE_BLOC, y * SIZE_BLOC); 
+			//break;
+
+		}
+	}
 
 struct map* map_get_static(void)
 {
@@ -189,7 +236,6 @@ struct map* map_get_static_2(void)
   	int next_map[200];
   	int size;
   	int i;
-  	int j;
 
   	f = fopen("map_2","r");
 
@@ -198,9 +244,9 @@ struct map* map_get_static_2(void)
   	}
 
   	fscanf(f, "%d:%d", &length, &width);
-  	printf("map size : %d x %d\n",width, length);
+  	//printf("map size : %d x %d\n",width, length);
   	size = length*width;
-	printf("%d\n", size);
+	//printf("%d\n", size);
 	
   	for(i=0; i<size; i++)
   	{	
@@ -211,13 +257,6 @@ struct map* map_get_static_2(void)
 	for(i=0; i<size; i++){
 		fscanf(f, "%d", &next_map[i]);
 	}
-	
-
-  	for(j=0; j<size; j++)
-  	{
-    	printf("%d\n", next_map[j]);
-  	}
-
 
 	struct map* map = map_new(width, length);
 
@@ -263,7 +302,6 @@ struct map* map_get_static_3(void)
   	int next_map[200];
   	int size;
   	int i;
-  	int j;
 
   	f = fopen("map_3","r");
 
@@ -272,9 +310,7 @@ struct map* map_get_static_3(void)
   	}
 
   	fscanf(f, "%d:%d", &length, &width);
-  	printf("map size : %d x %d\n",width, length);
   	size = length*width;
-	printf("%d\n", size);
 	
   	for(i=0; i<size; i++)
   	{	
@@ -286,11 +322,6 @@ struct map* map_get_static_3(void)
 		fscanf(f, "%d", &next_map[i]);
 	}
 	
-
-  	for(j=0; j<size; j++)
-  	{
-    	printf("%d\n", next_map[j]);
-  	}
 
   	fclose(f);
 

@@ -10,6 +10,8 @@
 #include <window.h>
 #include <misc.h>
 #include <constant.h>
+#include <map.h>
+
 
 struct player {
 	int x, y;
