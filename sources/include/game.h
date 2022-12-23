@@ -29,4 +29,6 @@ void game_display(struct game* game);
 // update
 int game_update(struct game* game);
 
+int player_get_door(struct game *game, struct map *map, struct player *player);
+
 #endif /* GAME_H_ */

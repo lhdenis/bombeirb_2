@@ -179,3 +179,147 @@ struct map* map_get_static(void)
 
 	return map;
 }
+
+
+struct map* map_get_static_2(void)
+{
+	FILE *f;
+  	int length;
+  	int width;
+  	int next_map[200];
+  	int size;
+  	int i;
+  	int j;
+
+  	f = fopen("map_2","r");
+
+  	if(f==NULL){
+    	printf("Unable to open the field\n");
+  	}
+
+  	fscanf(f, "%d:%d", &length, &width);
+  	printf("map size : %d x %d\n",width, length);
+  	size = length*width;
+	printf("%d\n", size);
+	
+  	for(i=0; i<size; i++)
+  	{	
+		next_map[i] = 0;
+  	}
+	
+
+	for(i=0; i<size; i++){
+		fscanf(f, "%d", &next_map[i]);
+	}
+	
+
+  	for(j=0; j<size; j++)
+  	{
+    	printf("%d\n", next_map[j]);
+  	}
+
+
+	struct map* map = map_new(width, length);
+
+	for ( int i = 0; i < size; i++){
+		switch(next_map[i]){
+
+			case(0):
+				map->grid[i] = CELL_EMPTY;
+			break;
+
+			case(17):
+				map->grid[i] = CELL_STONE;
+			break;
+
+            case(18):
+				map->grid[i] = CELL_TREE;
+			break;
+
+			case(48): // 110000
+				map->grid[i] = CELL_DOOR;
+			break;
+
+
+		}
+	}
+		
+	for (int i = 0; i < size; i++)
+		map->grid[i] = next_map[i];
+
+	return map;
+
+
+
+  	fclose(f);
+}
+
+
+struct map* map_get_static_3(void)
+{
+	FILE *f;
+  	int length;
+  	int width;
+  	int next_map[200];
+  	int size;
+  	int i;
+  	int j;
+
+  	f = fopen("map_3","r");
+
+  	if(f==NULL){
+    	printf("Unable to open the field\n");
+  	}
+
+  	fscanf(f, "%d:%d", &length, &width);
+  	printf("map size : %d x %d\n",width, length);
+  	size = length*width;
+	printf("%d\n", size);
+	
+  	for(i=0; i<size; i++)
+  	{	
+		next_map[i] = 0;
+  	}
+	
+
+	for(i=0; i<size; i++){
+		fscanf(f, "%d", &next_map[i]);
+	}
+	
+
+  	for(j=0; j<size; j++)
+  	{
+    	printf("%d\n", next_map[j]);
+  	}
+
+  	fclose(f);
+
+	struct map* map = map_new(width, length);
+
+	for ( int i = 0; i < size; i++){
+		switch(next_map[i]){
+
+			case(0):
+				map->grid[i] = CELL_EMPTY;
+			break;
+
+			case(17):
+				map->grid[i] = CELL_STONE;
+			break;
+
+            case(18):
+				map->grid[i] = CELL_TREE;
+			break;
+		}
+	}
+		
+		
+
+	for (int i = 0; i < size; i++)
+		map->grid[i] = next_map[i];
+
+	return map;
+}
+
+
+
