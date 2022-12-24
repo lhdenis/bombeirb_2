@@ -152,6 +152,8 @@ int game_update(struct game* game) {
 		printf("door");
 		game->level++;
 	}
+	bomb_update(map, player);
+	explosion_update(map);
 	return 0;
 }
 
@@ -164,8 +166,6 @@ int player_get_door(struct game *game, struct map *map, struct player *player){
 	if(map_get_cell_type(map, x, y) == CELL_DOOR){
 		return 1;
 	}
-	bomb_update(map, player);
-	
 	return 0;
 
 }

@@ -24,7 +24,7 @@ struct map {
 	int timer_monster;
 	//struct monster *monster_tab;
 	struct bomb *tab_bomb;
-	//struct explosion *explosion_tab;
+	struct explosion *tab_explosion;
 };
 
 #define CELL(i,j) ( (i) + (j) * map->width)
@@ -54,7 +54,10 @@ struct map* map_new(int width, int height)
 	// initialisation
 
 	map->tab_bomb = malloc(9*sizeof(struct bomb*));
+	map->tab_explosion = malloc(9*sizeof(struct explosion*));
+
 	bomb_init_tab(map->tab_bomb);
+	explosion_init_tab(map->tab_explosion);
 
 	return map;
 }
@@ -76,6 +79,11 @@ void map_free(struct map *map)
 struct bomb *map_get_tab_bomb(struct map *map){
 	assert(map);
 	return map->tab_bomb;
+}
+
+struct explosion *map_get_tab_explosion(struct map *map){
+	assert(map);
+	return map->tab_explosion;	
 }
 
 int map_get_width(struct map* map)
@@ -194,10 +202,10 @@ void bomb_display(struct map *map, int x, int y, unsigned char type){
 		case BOMB_4:
 			window_display_image(sprite_get_bombs(3), x, y); 
 			break;
-		//case BOMB_EXPLOSION:
-			//bomb_explosion(map, x, y);
-			//window_display_image(sprite_get_bombs(3), x * SIZE_BLOC, y * SIZE_BLOC); 
-			//break;
+		case BOMB_EXPLOSION:
+			bomb_explosion(map, x, y);
+			window_display_image(sprite_get_bombs(3), x * SIZE_BLOC, y * SIZE_BLOC); 
+			break;
 
 		}
 	}

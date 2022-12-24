@@ -63,7 +63,7 @@ enum compose_type {
 	CELL_BOMB_2 = CELL_BOMB | BOMB_2,
 	CELL_BOMB_3 = CELL_BOMB | BOMB_3,
 	CELL_BOMB_4 = CELL_BOMB | BOMB_4,
-
+	CELL_EXPLOSION = CELL_BOMB | BOMB_EXPLOSION,
 
 };
 
@@ -96,5 +96,7 @@ void map_display(struct map* map);
 void bomb_display(struct map *map, int x, int y, unsigned char type);
 
 struct bomb *map_get_tab_bomb(struct map *map);
+
+struct explosion *map_get_tab_explosion(struct map *map);
 
 #endif /* MAP_H_ */

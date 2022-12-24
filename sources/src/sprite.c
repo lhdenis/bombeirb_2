@@ -39,6 +39,7 @@
 #define BOMB_TTL2       "sprite/bomb2.png"
 #define BOMB_TTL3       "sprite/bomb3.png"
 #define BOMB_TTL4       "sprite/bomb4.png"
+#define BOMB_EXP        "sprite/explosion.png"
 
 // Sprites of Bonus
 #define IMG_BONUS_BOMB_RANGE_INC  "sprite/bonus_bomb_range_inc.png"
@@ -243,6 +244,20 @@ SDL_Surface* sprite_get_bombs(int i) {
 	return bombs_img[i];
 }
 
+SDL_Surface* explosion;
+
+static void explosion_load(){
+	explosion = image_load(BOMB_EXP);
+}
+
+static void explosion_unload(){
+	SDL_FreeSurface(explosion);	
+}
+
+SDL_Surface* sprite_get_explosion() {
+	assert(explosion);
+	return explosion;
+}
 
 void sprite_load() {
 	map_load();
@@ -250,6 +265,7 @@ void sprite_load() {
 	banner_load();
 	player_load();
 	bombs_load();
+	explosion_load();
 
 }
 void sprite_free() {
@@ -258,5 +274,6 @@ void sprite_free() {
 	banner_unload();
 	player_unload();
 	bombs_unload();
+	explosion_unload();
 }
 
